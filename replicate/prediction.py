@@ -1,4 +1,4 @@
-import time
+import asyncio
 from typing import Any, Dict, Iterator, List, Optional
 
 from replicate.base_model import BaseModel
@@ -18,13 +18,13 @@ class Prediction(BaseModel):
     status: str
     version: Optional[Version]
 
-    def wait(self):
+    async def wait(self):
         """Wait for prediction to finish."""
         while self.status not in ["succeeded", "failed", "canceled"]:
-            time.sleep(0.5)
+            await asyncio.sleep(0.5)
             self.reload()
 
-    def output_iterator(self) -> Iterator[Any]:
+    async def output_iterator(self) -> Iterator[Any]:
         # TODO: check output is list
         previous_output = self.output or []
         while self.status not in ["succeeded", "failed", "canceled"]:
@@ -33,7 +33,7 @@ class Prediction(BaseModel):
             for output in new_output:
                 yield output
             previous_output = output
-            time.sleep(0.5)
+            await asyncio.sleep(0.5)
             self.reload()
 
         if self.status == "failed":
