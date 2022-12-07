@@ -53,3 +53,5 @@ for filename in os.listdir("./Cogs"):
         except Exception as e:
             logger.exception(e)
             raise e
+
+bot.run(TOKEN)
