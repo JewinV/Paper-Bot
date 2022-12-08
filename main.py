@@ -6,17 +6,17 @@ import os
 import logging
 import traceback
 
-#----------------------LOGGING-Config--------------------#
+# ----------------------LOGGING-Config--------------------#
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 formatter = logging.Formatter("%(asctime)s:%(created)f:%(filename)s:%(levelname)s:%(funcName)s:%(message)s")
 file_handler = logging.FileHandler(os.path.abspath(f"LOGS/{__name__}.log"))
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
-#--------------------------------------------------------#
+# --------------------------------------------------------#
 
 
-TOKEN = os.environ.get("INANNA")
+TOKEN = os.environ.get("PAPERBOT")
 intents = discord.Intents.all()
 
 bot = commands.Bot(intents=intents)
@@ -28,6 +28,7 @@ async def on_ready():
     logger.info(f"{bot.user} is ready and online!")
     print(f"{bot.user} is ready and online!")
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="/help"))
+
 
 @bot.event
 async def on_application_command_error(ctx, error):
